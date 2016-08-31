@@ -1,1 +1,1 @@
-gcc linear_solver.c ../nrlib/ludcmp.c ../nrlib/nrutil.c -o LinearSolver
+gcc linear_solver.c ../nrlib/linear_solve.c ../nrlib/nrutil.c -o LinearSolver

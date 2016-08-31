@@ -1,1 +1,1 @@
-gcc resistor_network.c ../nrlib/ludcmp.c ../nrlib/nrutil.c -o ResistorNetwork
+gcc resistor_network.c ../nrlib/linear_solve.c ../nrlib/nrutil.c -o ResistorNetwork

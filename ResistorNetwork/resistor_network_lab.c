@@ -1,12 +1,6 @@
-//author: Xin Chen
-//update: 21 Aug 2016
-
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
 #include "../nrlib/linear_solve.h"
-
-//void show_2d_matrix(float **p, int n);
 
 int main(int argc, char const *argv[])
 {
@@ -15,26 +9,25 @@ int main(int argc, char const *argv[])
 	float **a, *b, d;
 	float I, R; 
 
-
 	if(argv[1]){
-		L = atoi(argv[1]);
-		n = (L+1)*(L+1);
+		L=atoi(argv[1]);
+		n=(L+1)*(L+1);
 		printf("L = %d, matrix_size = %d\n", L, n);
 	} 
 	else{
 		printf("Usage:\n resistorSolver [L]\n");
 		return 1;
 	}
-	indx = malloc((n+1)*sizeof(int));
 
 	// allocate memory for the matrix and initialize it with 0
-	a = (float **)malloc((n+1)*sizeof(float *));
+	indx=malloc((n+1)*sizeof(int));
+	b=(float *)malloc((n+1)*sizeof(float));
+	a=(float **)malloc((n+1)*sizeof(float *));
 	for (i=0; i<=n; i++){
 		a[i] = (float *)malloc((n+1)*sizeof(float));
 		for (j=0; j<=n; j++)
 			a[i][j]=0;
 	}
-	b = (float *)malloc((n+1)*sizeof(float));
 
 	// set the whole matrix
 	for (i=1; i<=n; i++){
@@ -95,31 +88,17 @@ int main(int argc, char const *argv[])
 			a[i][i-L-1]=-1;
 			b[i]=0;	
 		} //end if
-	} //end for
-	// test if the a matrix is correct
-	// show_2d_matrix(a, n);
+	}     //end for
 	ludcmp(a, n, indx, &d);
 	lubksb(a, n, indx, b);
-	I = 2*(b[1]-b[2]);
-	R = 1./I;
+	I=2*(b[1]-b[2]);
+	R=1./I;
 	printf("---solution---\n");
-	printf("I = %2.5lf\n", I);
-	printf("R = %2.5lf\n", R);
+	printf("I = %2.5f\n", I);
+	printf("R = %2.5f\n", R);
 	printf("--------------\n");
-	free(a);
-	free(b);
-	free(indx);
-
+	for (i=1;i<=n;i++) printf("%.2f ", b[i]);
+	printf("\n");
+	free(a);free(b);free(indx);
 	return 0;
-}
-
-void show_2d_matrix(float **p, int n)
-{
-	int i,j;
-	for (i=0; i<=n; i++){
-		for (j=0; j<=n; j++){
-			printf("%2.0lf ", p[i][j]);
-			if (j==n) printf("\n");
-		}
-	}
 }

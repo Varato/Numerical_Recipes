@@ -3,16 +3,16 @@
 #include "nrutil.h"
 #define TINY 1.0e-20
 
-void ludcmp(double **a, int n, int *indx, double *d)
+void ludcmp(float **a, int n, int *indx, float *d)
 /* a: the input matrix
    n: size of the matrix
    indx: records the permutation
    d: +1 or -1 stands for even or odd permutation times */
 {
 	int i, imax, j, k;
-	double big, dum, sum, temp;
-	double *vv;                // vv stores the implicity scaling of each row.
-	vv = dvector(1,n);
+	float big, dum, sum, temp;
+	float *vv;                // vv stores the implicity scaling of each row.
+	vv = vector(1,n);
 	*d = 1.0;
 	for (i=1; i<=n; i++){
 		big = 0.0;
@@ -58,18 +58,18 @@ void ludcmp(double **a, int n, int *indx, double *d)
 			for (i=j+1; i<=n; i++) a[i][j] *= dum;
 		}
 	}
-	free_dvector(vv, 1, n);
+	free_vector(vv, 1, n);
 }
 
 
-void lubksb(double **a, int n, int *indx, double b[])
+void lubksb(float **a, int n, int *indx, float b[])
 /* a: LU decomposed matrix
    n: size of the matrix
    indx: permutation
    b: constant vector */
 {
 	int i, ii=0, ip, j;
-	double sum;
+	float sum;
 
 	for(i=1; i<=n; i++){
 		ip=indx[i];

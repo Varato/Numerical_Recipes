@@ -3,12 +3,12 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "../nrlib/ludcmp.h"
+#include "../nrlib/linear_solve.h"
 
 int main(int argc, char const *argv[])
 {
-	double **a, *b;
-	double d;
+	float **a, *b;
+	float d;
 	int n, *indx;
 	int i,j;
 	const char *file_name;
@@ -23,11 +23,11 @@ int main(int argc, char const *argv[])
 
 	file = fopen(file_name, "r");
 	fscanf(file, "%d", &n);
-	b = malloc((n+1)*sizeof(double));
-	a = malloc((n+1)*sizeof(double *));
+	b = malloc((n+1)*sizeof(float));
+	a = malloc((n+1)*sizeof(float *));
 	indx = malloc((n+1)*sizeof(int));
 	for (i=0; i<=n; i++){
-		a[i] = malloc((n+1)*sizeof(double));
+		a[i] = malloc((n+1)*sizeof(float));
 	}
 
 	printf("============================\n");
@@ -36,9 +36,9 @@ int main(int argc, char const *argv[])
 	for (i=1; i<=n; i++){
 		for (j=1; j<=n; j++){
 			if(file!=NULL){
-				fscanf(file, "%lf", &a[i][j]);
+				fscanf(file, "%f", &a[i][j]);
 				if (i!=0 && j!=0){
-					printf("%5.3lf ", a[i][j]);
+					printf("%5.3f ", a[i][j]);
 					if (j==n) printf("\n");
 				}
 			}
@@ -47,7 +47,7 @@ int main(int argc, char const *argv[])
 	printf("The b vector loaded:\n[");
 	for (j=1; j<=n; j++){
 		if(file!=NULL){
-		fscanf(file, "%lf", &b[j]);
+		fscanf(file, "%f", &b[j]);
 		if(j!=0)
 			printf("%5.3f ", b[j]);
 		}
