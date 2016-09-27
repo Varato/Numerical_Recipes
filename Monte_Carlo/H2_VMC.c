@@ -21,7 +21,6 @@ int main()
 	double rand_uniform(double a, double b);
 	void initialize();
 	void zeroAccumulate();
-	void zeroAccumulate();
 	double trial_wave_func(double *r1, double *r2);
 	double local_energy(double *r1, double *r2);
 	void Metropolis_step(int walker);
