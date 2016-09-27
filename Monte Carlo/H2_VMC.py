@@ -13,7 +13,6 @@ global r20
 global E_sum, Esqrd_sum, nAccept
 global E_ave, E_var
 global MCSteps
-global sample
 
 R_norm = 1.398 # in unit of Bohr radias
 R = np.array([0,0,R_norm],dtype=float)
@@ -22,8 +21,6 @@ E_sum = Esqrd_sum = nAccept = 0
 MCSteps = 5000
 n_walkers = 150
 step_size = 1.0
-xMin = -10.0
-xMax = 10.0
 
 def flushPrint(string,num):
 	sys.stdout.write('\r')
@@ -66,11 +63,9 @@ def local_energy(r1, r2):
 	return E_loc
 
 def Metropolis_step(walker):
-	global r10, r20, nAccept, E_sum, Esqrd_sum, alpha, sample
+	global r10, r20, nAccept, E_sum, Esqrd_sum, alpha
 	trial_r1 = r10[walker]+step_size*np.random.uniform(-1, 1, 3)
 	trial_r2 = r20[walker]+step_size*np.random.uniform(-1, 1, 3)
-	# if trial_x < xMin: trial_x = xMin
-	# if trial_x > xMax: trial_x = xMax
 	w0 = trial_wave_func(r10[walker], r20[walker])
 	w1 = trial_wave_func(trial_r1, trial_r2)
 	p = (w1/w0)**2

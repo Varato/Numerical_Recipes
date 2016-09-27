@@ -12,8 +12,9 @@ y = []
 
 for xx in x:
 	y.append(mod.interpolate(c_float(xx)))
-plt.plot(x,y, color="cornflowerblue")
-plt.plot(xa,ya,'ro', markersize=8)
+plt.plot(x,y, color="cornflowerblue",label="interpolation")
+plt.plot(xa,ya,'ro', markersize=8, label="data points")
+plt.legend(loc="upper, right")
 plt.axis([-1.5,4.5, -0.5,3.5])
 plt.grid(True)
 plt.show()

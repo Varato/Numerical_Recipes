@@ -43,14 +43,3 @@ then the returned value y=P(x).*/
 	}
 }
 
-
-
-
-
-
-
-
-
-
-
-
