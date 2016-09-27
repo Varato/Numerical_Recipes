@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <math.h>
+#include <stdlib.h>
 #include "../nrlib/nrutil.c"
 #include "../nrlib/nrutil.h"
 #define EPS 1.0e-13
@@ -13,7 +14,7 @@ int main()
 	long double qromb(long double (*func)(long double), long double a, long double b);
 	long double s;
  	s = qromb(test_func, 0, 2);
-	printf("I = %.16lf\n",s);
+	printf("I = %.16Lf\n",s);
 }
 
 long double test_func(long double x)
@@ -33,8 +34,8 @@ then the returned value y=P(x).*/
 	long double *c, *d;
 
 	dif=fabsl(x-xa[1]);
-	c=dvector(1,n);
-	d=dvector(1,n);
+	c = (long double*) malloc((n+1)*sizeof(long double));
+	d = (long double*) malloc((n+1)*sizeof(long double));
 
 	for (i=1; i<=n; i++){       //Here we find the index ns of the closest table entry
 		if( (dift=fabsl(x-xa[i])) < dif){
@@ -60,8 +61,6 @@ then the returned value y=P(x).*/
 		*y += ( *dy=(2*ns < (n-m) ? c[ns+1] : d[ns--]));
 		// if 2*ns < (n-m), that means upper path is better, vice versa.
 	}
-	free_dvector(c, 1, 0);
-	free_dvector(d, 1, 0);
 }
 
 
