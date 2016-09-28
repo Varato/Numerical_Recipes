@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <math.h>
 // Global varables
-int MCSteps = 10000;
+int MCSteps = 100000;
 int n_walkers = 150;    //number of walkers
 int nAccept;
 double step_size = 1.;
@@ -76,8 +76,16 @@ void initialize()
 		r20[i] = (double *) malloc(3*sizeof(double));
 		for (int d=0; d<3; d++)
 		{
-			r10[i][d] = rand_uniform(-0.5, 0.5);
-			r20[i][d] = rand_uniform(-0.5, 0.5);
+			if(d==2) 
+			{
+				r10[i][d]=0.5*R_norm;
+				r20[i][d]=0.5*R_norm;
+			}
+			else
+			{
+				r10[i][d] = 0;
+				r20[i][d] = 0;
+			}
 		}
 	}
 }
