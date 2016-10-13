@@ -3,26 +3,26 @@
 #include <stdlib.h>
 #include "../nrlib/nrutil.c"
 #include "../nrlib/nrutil.h"
-#define EPS 1.0e-13
+#define EPS 1.0e-7
 #define JMAX 20
 #define JMAXP (JMAX+1)
 #define K 5 //K for Roberg Integration
 
 int main()
 {
-	long double test_func(long double x);
-	long double qromb(long double (*func)(long double), long double a, long double b);
-	long double s;
+	float test_func(float x);
+	float qromb(float (*func)(float), float a, float b);
+	float s;
  	s = qromb(test_func, 0, 2);
-	printf("I = %.16Lf\n",s);
+	printf("I = %.16f\n",s);
 }
 
-long double test_func(long double x)
+float test_func(float x)
 {
 	return pow(x,4)*log(x+sqrt(x*x+1));
 }
 
-void polint(long double xa[], long double ya[], int n, long double x, long double *y, long double *dy)
+void polint(float xa[], float ya[], int n, float x, float *y, float *dy)
 
 /*Given arrays xa[1..n] and ya[1..n], and given a value x, 
 this routine returns a value y, and an error estimate dy.
@@ -30,15 +30,15 @@ If P(x) is the polynomial of degree N-1 such that P(xai) = yai,
 then the returned value y=P(x).*/
 {
 	int i, m, ns=1;
-	long double den, dif, dift, ho, hp, w;
-	long double *c, *d;
+	float den, dif, dift, ho, hp, w;
+	float *c, *d;
 
-	dif=fabsl(x-xa[1]);
-	c = (long double*) malloc((n+1)*sizeof(long double));
-	d = (long double*) malloc((n+1)*sizeof(long double));
+	dif=fabsf(x-xa[1]);
+	c = (float*) malloc((n+1)*sizeof(float));
+	d = (float*) malloc((n+1)*sizeof(float));
 
 	for (i=1; i<=n; i++){       //Here we find the index ns of the closest table entry
-		if( (dift=fabsl(x-xa[i])) < dif){
+		if( (dift=fabsf(x-xa[i])) < dif){
 			ns=i;
 			dif=dift;
 		}
@@ -66,10 +66,10 @@ then the returned value y=P(x).*/
 
 // Basic trapzodial integration
 #define FUNC(x) ((*func)(x))
-long double trapzd(long double (*func)(long double), long double a, long double b, int n)
+float trapzd(float (*func)(float), float a, float b, int n)
 {
-	long double x,tnm,sum,del;
-	static long double s; //it will be initialize as 0 automatically
+	float x,tnm,sum,del;
+	static float s; //it will be initialize as 0 automatically
 	int it,j;
 
 	if (n == 1) {
@@ -87,13 +87,13 @@ long double trapzd(long double (*func)(long double), long double a, long double 
 #undef FUNC
 
 //Romberg Integration
-long double qromb(long double (*func)(long double), long double a, long double b)
+float qromb(float (*func)(float), float a, float b)
 {
-	void polint(long double xa[], long double ya[], int n, long double x, long double *y, long double *dy);	
-	long double trapzd(long double (*func)(long double), long double a, long double b, int n);
+	void polint(float xa[], float ya[], int n, float x, float *y, float *dy);	
+	float trapzd(float (*func)(float), float a, float b, int n);
 	void nrerror(char error_text[]);
-	long double ss, dss;
-	long double s[JMAXP],h[JMAXP+1];
+	float ss, dss;
+	float s[JMAXP],h[JMAXP+1];
 	int j;
 
 	h[1]=1.0;
@@ -101,7 +101,7 @@ long double qromb(long double (*func)(long double), long double a, long double b
 		s[j]=trapzd(func, a, b, j);
 		if (j>=K) {
 			polint(&h[j-K], &s[j-K], K, 0.0, &ss, &dss);
-			if (fabsl(dss)<=EPS*fabsl(ss)) return ss;
+			if (fabsf(dss)<=EPS*fabsf(ss)){printf("Steps: %d\n", j) ;return ss;}
 		}
 		h[j+1]=0.25*h[j]; // Here h is actually h^2 !!!!!
 		/*This is a key step: The factor is 0.25 

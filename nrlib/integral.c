@@ -82,7 +82,7 @@ float qromb(float (*func)(float), float a, float b)
 	h[1]=1.0;
 	for (j=1; j<=JMAX; j++){
 		s[j]=trapzd(func, a, b, j);
-		if (j>=K) {
+		if (j>=K) { // do the interpolation at least 5 rounds completed.
 			polint(&h[j-K], &s[j-K], K, 0.0, &ss, &dss);
 			if (fabs(dss)<=EPS*fabs(ss)) return ss;
 		}

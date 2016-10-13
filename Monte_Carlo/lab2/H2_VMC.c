@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <math.h>
 // Global varables
-int MCSteps = 100000;
+int MCSteps = 500000;
 int n_walkers = 150;    //number of walkers
 int nAccept;
 double step_size = 1.;
@@ -17,7 +17,7 @@ int main()
 {
 	srand(1946); // set random seed
     
-    // declaration of functions
+        // declaration of functions
 	double rand_uniform(double a, double b);
 	void initialize();
 	void zeroAccumulate();
@@ -35,6 +35,9 @@ int main()
 	int numPoints = 30; // going to compute 30 points
 	double dr = 0.05;   // the interval between those points
 	file = fopen(file_name,"w");
+	printf("MCsteps: %d\n", MCSteps);
+	printf("walkers: %d\n", n_walkers);
+	printf("---------------------------------------------------\n");
 	for(int p=0; p<numPoints; p++)
 	{
 		printf("Current rAB = %f, %d/%d \n", rAB, p+1, numPoints);
@@ -45,9 +48,9 @@ int main()
 	        //write the result into a file
 		fprintf(file, "%f, %f, %f\n", rAB, E_ave, Error);
 		rAB += dr;
-	printf("Acceptance ratio: %f\n", 1.0*nAccept/n_walkers/MCSteps);
-	printf("Result:\nE_0 = %f (e/a0), E_var %f \n", E_ave, E_var);
-	printf("---------------------------------------------------\n");
+		printf("Acceptance ratio: %f\n", 1.0*nAccept/n_walkers/MCSteps);
+		printf("Result:\nE_0 = %f (e/a0), E_var %f \n", E_ave, E_var);
+		printf("---------------------------------------------------\n");
 	}
 	fclose(file);
 
@@ -101,10 +104,13 @@ double trial_wave_func(double *r1, double *r2)
 	double rA1, rA2, rB1, rB2;
 	double psi;
 	rA1 = rA2 = rB1 = rB2 = 0;
-	for(int d=0; d<3; d++) rA1 += pow(r1[d]-R[d],2);
-	for(int d=0; d<3; d++) rA2 += pow(r2[d]-R[d],2);
-	for(int d=0; d<3; d++) rB1 += pow(r1[d],2);
-	for(int d=0; d<3; d++) rB2 += pow(r2[d],2);
+	for(int d=0; d<3; d++) 
+	{
+		rA1 += pow(r1[d]-R[d],2);
+		rA2 += pow(r2[d]-R[d],2);
+		rB1 += pow(r1[d],2);
+		rB2 += pow(r2[d],2);
+	}
 	rA1 = sqrt(rA1);
 	rA2 = sqrt(rA2);
 	rB1 = sqrt(rB1);
@@ -206,8 +212,7 @@ void runMonte_Carlo()
 		oneMonte_Carlo_step();
 	}
 	E_ave = E_sum/(double)(n_walkers)/(double)(MCSteps);
-	E_var = Esqrd_sum/(double)(n_walkers)/(double)(MCSteps) 
-	        - E_ave*E_ave;
+	E_var = Esqrd_sum/(double)(n_walkers)/(double)(MCSteps)- E_ave*E_ave;
 }
 
 
