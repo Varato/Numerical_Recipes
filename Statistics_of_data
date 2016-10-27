@@ -1,0 +1,40 @@
+what's the different between error and standard deviation?
+<x> \pm \sigma / \sqrt{N}
+
+###Higher Moments
+Skewness -- third moment
+Kurtosis -- forth moment
+How much a distribution differs from standard Gaussian distribution
+For standard Gaussian dist:
+<x>=0
+<x^2>=\sigma^2
+<x^3>=0
+<x^4>=3\sigma^4      % by Wick's theorem https://en.wikipedia.org/wiki/Wick%27s_theorem
+
+
+
+X ~ N(u1, \sigma1)
+Y ~ N(u2, \sigma2)
+X+Y is still a Gaussian distribution
+X^2+Y^2
+
+
+
+chi^2 distribution & least square method
+
+Your chi^2 cannot be too small. That's overfitting!!
+
+###Linear Regression Model
+
+e~N(0,\sigma) %How much the straight line differs from data points
+<e>=0
+<ei, ej>=\sigma^2\delta_{ij}
+
+error is a random variable.
+deviation is a number.
+
+Error propagation
+a, b
+basic idea
+Tylor expasion at <y_i>
+
