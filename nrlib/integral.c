@@ -7,10 +7,10 @@
 
 // Basic trapzodial integration
 #define FUNC(x) ((*func)(x))
-float trapzd(float (*func)(float), float a, float b, int n)
+double trapzd(double (*func)(double), double a, double b, int n)
 {
-	float x,tnm,sum,del;
-	static float s; //it will be initialize as 0 automatically
+	double x,tnm,sum,del;
+	static double s; //it will be initialize as 0 automatically
 	int it,j;
 
 	if (n == 1) {
@@ -28,18 +28,18 @@ float trapzd(float (*func)(float), float a, float b, int n)
 #undef FUNC
 
 // Trapzodial Integration
-float qtrap(float (*func)(float), float a, float b)
+double qtrap(double (*func)(double), double a, double b)
 {
 
-	float trapzd(float (*func)(float), float a, float b, int n);
+	double trapzd(double (*func)(double), double a, double b, int n);
 	void nrerror(char error_text[]);
 	int j;
-	float s, olds=0.0;
+	double s, olds=0.0;
 
 	for (j=1; j<=JMAX; j++){
 		s = trapzd(func, a, b, j);
 		if (j>5)
-			if (fabs(s-olds) < EPS*fabs(olds) ||
+			if (abs(s-olds) < EPS*abs(olds) ||
 				(s==0.0 && olds ==0.0)) return s;
 		olds = s;
 	}
@@ -48,18 +48,18 @@ float qtrap(float (*func)(float), float a, float b)
 }
 
 // Simpson Integration
-float qsimp(float (*func)(float), float a, float b)
+double qsimp(double (*func)(double), double a, double b)
 {
-	float trapzd(float (*func)(float), float a, float b, int n);
+	double trapzd(double (*func)(double), double a, double b, int n);
 	void nrerror(char error_text[]);
 	int j;
-	float s, st, ost=0.0, os=0.0;
+	double s, st, ost=0.0, os=0.0;
 
 	for (j=1; j<=JMAX; j++){
 		st = trapzd(func, a, b, j);
 		s = (4.0*st-ost)/3.0; // Notice S2N and SN can be
 		if (j>5)              // obtained by any two consecutive calls of trapzd()
-			if (fabs(s-os) < EPS*fabs(os) || 
+			if (abs(s-os) < EPS*abs(os) || 
 					(s == 0.0 && os == 0.0)) return s;
 		os = s;
 		ost = st;
@@ -70,13 +70,13 @@ float qsimp(float (*func)(float), float a, float b)
 
 
 //Romberg Integration
-float qromb(float (*func)(float), float a, float b)
+double qromb(double (*func)(double), double a, double b)
 {
-	void polint(float xa[], float ya[], int n, float x, float *y, float *dy);	
-	float trapzd(float (*func)(float), float a, float b, int n);
+	void polint(double xa[], double ya[], int n, double x, double *y, double *dy);	
+	double trapzd(double (*func)(double), double a, double b, int n);
 	void nrerror(char error_text[]);
-	float ss, dss;
-	float s[JMAXP],h[JMAXP+1];
+	double ss, dss;
+	double s[JMAXP],h[JMAXP+1];
 	int j;
 
 	h[1]=1.0;
@@ -84,7 +84,7 @@ float qromb(float (*func)(float), float a, float b)
 		s[j]=trapzd(func, a, b, j);
 		if (j>=K) { // do the interpolation at least 5 rounds completed.
 			polint(&h[j-K], &s[j-K], K, 0.0, &ss, &dss);
-			if (fabs(dss)<=EPS*fabs(ss)) return ss;
+			if (abs(dss)<=EPS*abs(ss)) return ss;
 		}
 		h[j+1]=0.25*h[j]; // Here h is actually h^2 !!!!!
 		/*This is a key step: The factor is 0.25 

@@ -7,16 +7,18 @@ dt = 0.1
 sigma = 1
 a = 5*np.sqrt(2)
 
-x_step=0.001
+x_step=0.0001
 x=np.arange(-20,20,x_step)
 N=len(x)
+print N
+exit()
 global wave_packet
 V_exp_factor = []
 T_exp_factor = []
 wave_packet = []
 
 def Gaussian_wp(x,x0,p0):
-	return np.exp(-(x-x0)**2/2*sigma)*np.exp(1j*p0*(x-x0))
+	return np.exp(-(x-x0)**2/(2*sigma**2))*np.exp(1j*p0*(x-x0))
 
 def V(x):
 	if 0<=x<=a:
@@ -59,29 +61,29 @@ def evolve(n):
 		normalize()
 
 
-plt.figure(figsize=[19.24,10.80])
-plt.subplot(421)
-# plt.plot([0,0,a,a,0],[-1,1,1,-1], 'k-')
-plt.plot(x, wave_packet)
+# plt.figure(figsize=[19.24,10.80])
+# plt.subplot(421)
+# # plt.plot([0,0,a,a,0],[-1,1,1,-1], 'k-')
+# plt.plot(x, wave_packet)
 
-evolve(15)
-plt.subplot(422)
-plt.plot(x, wave_packet)
+# evolve(15)
+# plt.subplot(422)
+# plt.plot(x, wave_packet)
 
-evolve(20)
-plt.subplot(423)
-# plt.plot([0,0,a,a],[-1,1,1,-1], 'k-')
-plt.plot(x, wave_packet)
+# evolve(20)
+# plt.subplot(423)
+# # plt.plot([0,0,a,a],[-1,1,1,-1], 'k-')
+# plt.plot(x, wave_packet)
 
-evolve(20)
-plt.subplot(424)
-# plt.plot([0,0,a,a],[-1,1,1,-1], 'k-')
-plt.plot(x, wave_packet)
+# evolve(20)
+# plt.subplot(424)
+# # plt.plot([0,0,a,a],[-1,1,1,-1], 'k-')
+# plt.plot(x, wave_packet)
 
-evolve(20)
-plt.subplot(425)
-# plt.plot([0,0,a,a],[-1,1,1,-1], 'k-')
-plt.plot(x, wave_packet)
+# evolve(20)
+# plt.subplot(425)
+# # plt.plot([0,0,a,a],[-1,1,1,-1], 'k-')
+# plt.plot(x, wave_packet)
 
 
 evolve(20)
