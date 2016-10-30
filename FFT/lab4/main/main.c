@@ -15,34 +15,34 @@
 #define p0 10
 #define V0 1
 
-double complex V_exp[N];
-double complex T_exp[N];
-double complex wave_packet[N];
-double complex p_wave_packet[N];
-fftw_plan fft, ifft; 
-// double complex p_wave_packet[N];
-
+//declaration of functions
 double complex Gaussian_wp(double);
 void normalize();
 void initialize();
 void write_file();
 void evolve();
 
+//global variables
+double complex V_exp[N];
+double complex T_exp[N];
+double complex wave_packet[N];   // x representation of wave packet
+double complex p_wave_packet[N]; // p representation of wave packet
+fftw_plan fft, ifft;             // fft plan for fftw 
+
 int main()
 {
 	FILE *f;
-	f=fopen("result", "w");
 	int i;
-	initialize(wave_packet);
+	f=fopen("result", "w");
+	initialize();
 	fft = fftw_plan_dft_1d(N, wave_packet, p_wave_packet, FFTW_FORWARD, FFTW_ESTIMATE);
 	ifft = fftw_plan_dft_1d(N, p_wave_packet, wave_packet, FFTW_BACKWARD, FFTW_ESTIMATE);
-	// write_file(f);
-
-	for(i=0; i<=100; i++){
+	write_file(f);
+	for(i=0; i<=300; i++){
 		printf("evolved step: %d\n", i);
+		evolve();
 		if(i%5==0)
 			write_file(f);
-		evolve();
 	}
 	fclose(f);
 }
@@ -86,7 +86,6 @@ void normalize()
 void initialize()
 {
 	int i;
-	// wave_packet = (fftw_complex*) fftw_malloc(sizeof(fftw_complex) * N);
 	double x, p;
 	for(i=0; i<N; i++){
 		x = -L/2.0 + x_step*(i+1);
@@ -112,11 +111,10 @@ void evolve()
 	}
 	fftw_execute(fft);
 	for(i=0; i<N; i++){
-		wave_packet[i] *= T_exp[i];
+		p_wave_packet[i] *= T_exp[i];
 	}
 	fftw_execute(ifft);
 	normalize();
-
 }
 
 
