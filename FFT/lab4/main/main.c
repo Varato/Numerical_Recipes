@@ -12,7 +12,7 @@
 #define N 40000
 #define a 7.0710678118654755
 #define x0 -6
-#define p0 10
+#define p0 0.8
 #define V0 1
 
 //declaration of functions
@@ -41,17 +41,22 @@ int main()
 	for(i=0; i<=300; i++){
 		printf("evolved step: %d\n", i);
 		evolve();
-		if(i%5==0)
+		if(i%10==0)
 			write_file(f);
 	}
 	fclose(f);
+	fftw_destroy_plan(fft);
+	fftw_destroy_plan(ifft);
 }
 
 void write_file(FILE *f)
 {
 	int i;
+	double wr, wi;
 	for(i=0; i<N; i++){
-		fprintf(f, "%lf ", creal(wave_packet[i]));
+		wr=creal(wave_packet[i]);
+		wi=cimag(wave_packet[i]);
+		fprintf(f, "%lf ", wr*wr+wi*wi);
 		if(i==N-1) fprintf(f, "\n");
 	}
 	// for(i=0; i<N; i++){
@@ -69,6 +74,7 @@ void normalize()
 {
 	double ww[N];
 	double prod=0;
+	double A;
 	int i;
 	for(i=0; i<N; i++){
 		ww[i] = wave_packet[i]*conj(wave_packet[i]);
@@ -77,8 +83,9 @@ void normalize()
 	for(i=0; i<N-1; i++){
 		prod += (ww[i]+ww[i+1])*x_step/2.0;
 	}
+	A=sqrt(prod);
 	for(i=0; i<N; i++){
-		wave_packet[i] = wave_packet[i]/prod;
+		wave_packet[i] = wave_packet[i]/A;
 	}
 
 }

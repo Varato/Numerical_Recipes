@@ -30,14 +30,14 @@ def analyse_file(file_name, color,label_str):
 plt.figure(figsize=[12,9])
 plt.title("Honeycomb Ising Model")
 plt.axis([0,3.5,0,2000])	
-Tc10=analyse_file("result_ave1024.txt","c", "N=1000")
-Tc9=analyse_file("result_ave900.txt","r", "N=900")
-Tc4=analyse_file("result_ave400.txt", "b", "N=400")
-Tc1=analyse_file("result_ave100.txt","m","N=100")
-print Tc1, Tc4, Tc9, Tc10
+#Tc10=analyse_file("result_ave1024.txt","c", "N=1000")
+#Tc9=analyse_file("result_ave900.txt","r", "N=900")
+Tc4=analyse_file("result_ave100.txt", "b", "N=400")
+Tc1=analyse_file("tmp100.txt","m","N=100")
+#print Tc1, Tc4, Tc9, Tc10
 
-plt.legend(loc="upper right")
-plt.xlabel("$k_BT/J$")
-plt.ylabel("$C/k_B$")
+#plt.legend(loc="upper right")
+#plt.xlabel("$k_BT/J$")
+#plt.ylabel("$C/k_B$")
 plt.savefig("result.png")
-plt.show()
+#plt.show()

@@ -4,10 +4,10 @@
 #include <math.h>
 
 #define Z  3
-#define x  32
-#define y  32 // y has to be even
+#define x  10
+#define y  10 // y has to be even
 #define N x*y
-#define MCTOT  1000000
+#define MCTOT  100000
 #define MCDIS  1000
 
 int s[N+1]; // index used starts from 1
@@ -24,7 +24,7 @@ int main()
 
 	FILE *file;
 	char *file_name;
-	file_name = "result_Lave1024.txt";
+	file_name = "tmp100.txt";
 	file = fopen(file_name, "w");
 	run_Monte_Carlo(0.5, 1.3, 0.2, file);
 	run_Monte_Carlo(1.4, 1.6, 0.05, file);
@@ -34,7 +34,7 @@ int main()
 void run_Monte_Carlo(double T1, double T2, double dT, FILE *file)
 {
 	int mc;
-	int n, n_ave = 10; //
+	int n, n_ave = 1; //
 	double c=0, C_ave; // capacity in unit of k
 	double C_sum, C_sqr_sum, C_var;  
 	double e;
@@ -127,7 +127,7 @@ void energy(double *e, double *e_sqr)
 		for(j = 0; j < Z; j++) 
 		{
 			if(i<nn[j])
-				ie += -s[i]*s[nn[j]];
+				ie += s[i]*s[nn[j]];
 		}   		
 	}
 	assert((double)ie <= (3.*(double)(N)/2.) && ie >= -3.*(double)(N)/2.);
